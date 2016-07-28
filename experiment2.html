@@ -1,0 +1,103 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+
+  <!-- disable zooming -->
+  <meta name="viewport" content="initial-scale=1.0, user-scalable=0" />
+
+  <title>Carousel</title>
+
+  <link rel="stylesheet" href="style.css" media="screen" />
+
+
+    <style media="screen">
+
+    .container {
+      width: 210px;
+      height: 140px;
+      position: relative;
+      margin: 0 auto 40px;
+      border: 1px solid #CCC;
+      perspective: 1100px;
+    }
+
+    #carousel {
+      width: 100%;
+      height: 100%;
+      position: absolute;
+      transform: translateZ( -288px );
+      transform-style: preserve-3d;
+      transition: transform 1s;
+    }
+
+    #carousel figure {
+      display: block;
+      position: absolute;
+      width: 186px;
+      height: 116px;
+      left: 10px;
+      top: 10px;
+      border: 2px solid black;
+      line-height: 116px;
+      font-size: 80px;
+      font-weight: bold;
+      color: white;
+      text-align: center;
+      /*backface-visibility: hidden;*/
+    }
+
+  </style>
+</head>
+<body>
+
+  <h1>Carousel</h1>
+  <section id="options">
+    <p id="navigation">
+      X: <input id="X" type="range" min="0" max="360" step="10"/>
+      Y: <input id="Y" type="range" min="0" max="360" step="10"/>
+      Z: <input id="Z" type="range" min="0" max="360" step="10"/>
+      #: <input id="P" type="range" min="3" max="10" step="1" value="9"/>
+    </p>
+  </section>
+  <section class="container">
+    <div id="carousel">
+    </div>
+  </section>
+
+
+  <script>
+  rotate = function(){
+    carousel.style.transform = 'translateZ( -'+depth+'px ) rotateX(' + sliders[0].value + 'deg) rotateY(' + sliders[1].value + 'deg) rotateZ(' + sliders[2].value + 'deg)';
+  }
+  createPanels = function(){
+    var build = new Array();
+    amt = document.querySelector("#P").value;
+    for(i = 0; i < amt; i++){
+      build.push("<figure>" + i + "</figure>");
+    }
+    carousel.innerHTML = build.join("");
+  }
+  init = function(){
+    carousel = document.querySelector('#carousel')
+    createPanels();
+    panels = document.querySelectorAll('#carousel figure');
+    delta = 360 / panels.length;
+    panelSize = document.querySelector(".container").clientWidth;
+    depth = Math.round( ( panelSize / 2 ) /  Math.tan( Math.PI / panels.length ) );
+    for(i=0;i<panels.length;i++){
+      offset = i * delta;
+      panels[i].style.background = "hsla("+ offset + ", 100%, 50%, 0.9 )";
+      panels[i].style.transform = "rotateY( "+ offset +"deg ) translateZ( "+depth+"px )";
+    }
+    sliders = document.querySelectorAll("input[type='range']")
+    for(i=0;i<sliders.length;i++){
+      sliders[i].addEventListener('change',rotate)
+    }
+    document.querySelector("#P").addEventListener('change',init);
+  }
+  window.onload = init();
+
+  </script>
+</body>
+</html>

@@ -1,0 +1,68 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+
+  <!-- disable zooming -->
+  <meta name="viewport" content="initial-scale=1.0, user-scalable=0" />
+
+  <title>Carousel</title>
+
+  <link rel="stylesheet" href="style.css" media="screen" />
+
+
+    <style media="screen">
+    *{
+        transition:1s;
+    }
+    #carousel {
+      width: 120px;
+      height: 120px;
+      transform-style: preserve-3d;
+      transition: transform 1s;
+      float:left;
+      margin:50px;
+    }
+
+    #carousel panel {
+      display: block;
+      position: absolute;
+      width: 100px;
+      height: 100px;
+      border: 1px solid black;
+      backface-visibility: visible;
+      z-index:-1;
+    }
+  </style>
+  <script src="jquery.js"></script>
+</head>
+<body>
+  <div id="carousel" style="transform:rotateY(45deg) rotateX(45deg)">
+    <panel></panel>
+    <panel></panel>
+    <panel></panel>
+    <panel></panel>
+    <panel></panel>
+    <panel></panel>
+  </div>
+
+  <script>
+    var rotates = ["rotateY(0deg)","rotateY(90deg)","rotateY(180deg)","rotateY(270deg)","rotateY(180deg) rotateX(90deg) ","rotateY(180deg) rotateX(-90deg)" ]
+
+    expand = function(i,t){
+      elem = window.getComputedStyle(t).getPropertyValue("transform")
+      console.log(t.style.transform)
+      t.style.transform = rotates[i] + 'translateZ(100px)';
+    }
+    window.onload = function(){
+       $("panel").each(function(index,figure){
+         figure.style.background = "hsla("+ index * 60 + ", 100%, 50%, 0.9 )";
+         figure.style.transform = rotates[index] + "translate3D(0px,0px,50px)";
+         figure.addEventListener('click',function(){expand(index,figure)});
+       })
+    }
+
+  </script>
+
+</body>
+</html>

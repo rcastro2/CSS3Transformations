@@ -1,0 +1,81 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+
+  <!-- disable zooming -->
+  <meta name="viewport" content="initial-scale=1.0, user-scalable=0" />
+
+  <title>Carousel</title>
+
+  <link rel="stylesheet" href="style.css" media="screen" />
+
+
+    <style media="screen">
+    *{
+        transition:1s;
+    }
+    #container{
+      position:absolute;
+      left:0px;
+    }
+    .carousel {
+      width: 100px;
+      height: 100px;
+      transform-style: preserve-3d;
+      transition: transform 1s;
+      float:left;
+      margin:5px;
+    }
+
+    .carousel figure {
+      display: block;
+      position: absolute;
+      width: 100px;
+      height: 100px;
+      border: 1px solid black;
+      backface-visibility: visible;
+      z-index:-1;
+    }
+  </style>
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.3/jquery.min.js"></script>
+</head>
+<body>
+  <div id="container"></div>
+
+  <script>
+    var data;
+    var rotates = ["rotateY(0deg)","rotateY(90deg)","rotateY(180deg)","rotateY(270deg)","rotateY(180deg) rotateX(90deg) ","rotateY(180deg) rotateX(-90deg)" ]
+    createCarousels = function(){
+        var build = new Array();
+        build.push("<div class='carousel'>")
+        for(i = 0; i < rotates.length; i++){
+          build.push("<figure></figure>");
+        }
+        build.push("</div>")
+        container.innerHTML += build.join("");
+    }
+    adjustCarousels = function(){
+        $("figure").each(function(index,figure){
+                pos = index % 6;
+                figure.style.background = "hsla("+ pos * 60 + ", 100%, 50%, 0.9 )";
+                figure.style.transform = rotates[pos] + "translate3D(0px,0px,50px )";
+                figure.addEventListener('mouseover',rotate);
+        })
+    }
+    rotate = function(){
+            rx = Math.floor(Math.random()*360)
+            ry = Math.floor(Math.random()*360)
+            this.parentElement.style.transform = 'rotateX(' + rx + 'deg) rotateY(' + ry + 'deg)';
+    }
+    init = function(){
+        container = document.querySelector('#container')
+        for(cc = 0; cc < 162; cc++){
+          createCarousels();
+        }
+        adjustCarousels();
+    }
+    window.onload = init();
+  </script>
+</body>
+</html>

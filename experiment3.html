@@ -1,0 +1,124 @@
+
+
+
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+
+  <!-- disable zooming -->
+  <meta name="viewport" content="initial-scale=1.0, user-scalable=0" />
+
+  <title>Carousel</title>
+
+  <link rel="stylesheet" href="style.css" media="screen" />
+
+
+    <style media="screen">
+    *{
+        transition:1s;
+    }
+    #carousel {
+      width: 200px;
+      height: 200px;
+      position: absolute;
+      transform-style: preserve-3d;
+      transform-origin: 50% 50% 50%;
+      transition: transform 1s;
+      border: 1px solid #CCC;
+    }
+
+    #carousel figure {
+      display: block;
+      position: absolute;
+      width: 200px;
+      height: 200px;
+      border: 2px solid black;
+      line-height: 140px;
+      font-size: 80px;
+      font-weight: bold;
+      color: white;
+      text-align: center;
+      backface-visibility: visible;
+    }
+    #s1{
+        background-color:rgba(255,0,0,0.5);
+    }
+    #s2{
+        background-color:rgba(255,255,0,0.5);
+
+    }
+    #s3{
+        background-color:rgba(255,0,255,0.5);
+
+    }
+    #s4{
+        background-color:rgba(0,0,0,0.5);
+
+    }
+    #s5{
+        background-color:rgba(0,0,255,0.5);
+
+    }
+    #s6{
+        background-color:rgba(0,255,255,0.5);
+
+    }
+    .p:hover{
+        background-color:black;
+    }
+  </style>
+</head>
+<body>
+
+  <h1>Carousel</h1>
+
+
+    <div id="carousel">
+      <figure id="s1" class="p">1</figure>
+      <figure id="s2" class="p">2</figure>
+      <figure id="s3" class="p">3</figure>
+      <figure id="s4" class="p">4</figure>
+      <figure id="s5" class="p">5</figure>
+      <figure id="s6" class="p">6</figure>
+    </div>
+
+    <div id="navigation" style="margin-top:500px;">
+      X: <span id="xv"></span><input id="X" type="range" min="0" max="360" step="5"/>
+      Y: <span id="yv"></span><input id="Y" type="range" min="0" max="360" step="5"/>
+      Z: <span id="zv"></span><input id="Z" type="range" min="0" max="360" step="5"/><br/>
+      D: <span id="dv"></span><input id="D" type="range" min="100" max="400" step="5"/>
+    </div>
+
+  <script>
+      var depth = 200;
+      var rotates = ["rotateY(0deg)","rotateY(90deg)","rotateY(180deg)","rotateY(270deg)","rotateY(180deg) rotateX(90deg) ","rotateY(180deg) rotateX(-90deg)" ]
+     rotate = function(){
+
+            document.getElementById("xv").innerHTML = sliders[0].value;
+            document.getElementById("yv").innerHTML = sliders[1].value;
+            document.getElementById("zv").innerHTML = sliders[2].value;
+            carousel.style.transform = 'rotateX(' + sliders[0].value + 'deg) rotateY(' + sliders[1].value + 'deg) rotateZ(' + sliders[2].value + 'deg)';
+     }
+     explode = function(){
+         for(i = 0; i < panels.length;i++){
+            panels[i].style.transform = rotates[i] + " translateZ("+sliders[3].value +"px)";
+         }
+     }
+
+    init = function(){
+        carousel = document.querySelector('#carousel')
+        panels = document.querySelectorAll('#carousel figure');
+        sliders = document.querySelectorAll("input[type='range']")
+        for(i=0;i<sliders.length-1;i++){
+            sliders[i].addEventListener('change',rotate)
+        }
+        sliders[3].addEventListener('change',explode)
+        for(i = 0; i < panels.length;i++){
+            panels[i].style.transform = rotates[i] + " translateZ(150px)";
+        }
+    }
+    window.onload = init();
+  </script>
+</body>
+</html>

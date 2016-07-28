@@ -1,0 +1,110 @@
+
+
+
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+
+  <!-- disable zooming -->
+  <meta name="viewport" content="initial-scale=1.0, user-scalable=0" />
+
+  <title>Carousel</title>
+
+  <link rel="stylesheet" href="style.css" media="screen" />
+
+
+    <style media="screen">
+
+    .container {
+      width: 210px;
+      height: 140px;
+      position: relative;
+      margin: 0 auto 40px;
+      border: 1px solid #CCC;
+      perspective: 1100px;
+    }
+
+    #carousel {
+      width: 100%;
+      height: 100%;
+      position: absolute;
+      transform: translateZ( -288px );
+      transform-style: preserve-3d;
+      transition: transform 1s;
+    }
+
+    #carousel figure {
+      display: block;
+      position: absolute;
+      width: 186px;
+      height: 116px;
+      left: 10px;
+      top: 10px;
+      border: 2px solid black;
+      line-height: 116px;
+      font-size: 80px;
+      font-weight: bold;
+      color: white;
+      text-align: center;
+    }
+
+  </style>
+</head>
+<body>
+
+  <h1>Carousel</h1>
+
+  <section class="container">
+    <div id="carousel">
+      <figure>1</figure>
+      <figure>2</figure>
+      <figure>3</figure>
+      <figure>4</figure>
+      <figure>5</figure>
+      <figure>6</figure>
+      <figure>7</figure>
+      <figure>8</figure>
+      <figure>9</figure>
+
+    </div>
+  </section>
+
+  <section id="options">
+    <p id="navigation">
+      <button onclick="rotate(1)">Previous</button>
+      <button onclick="rotate(-1)">Next</button>
+    </p>
+  </section>
+  <script>
+  var theta = 0;
+  var isHorizontal = true;
+  window.onload = function(){
+    carousel = document.querySelector('#carousel')
+    panels = document.querySelectorAll('#carousel figure');
+    delta = 360 / panels.length;
+    panelSize = document.querySelector(".container").clientWidth;
+    depth = Math.round( ( panelSize / 2 ) /  Math.tan( Math.PI / panels.length ) );
+    for(i=0;i<panels.length;i++){
+      offset = i * delta;
+      color = "hsla("+ offset + ", 100%, 50%, 0.9 )";
+      panels[i].style.background = "hsla("+ offset + ", 100%, 50%, 0.9 )";
+      panels[i].style.transform = "rotateY( "+ offset +"deg ) translateZ( "+depth+"px )";
+      panels[i].setAttribute("offset",offset);
+
+      panels[i].addEventListener('mouseover',function(){
+        this.style.backgroundColor = 'rgba(0,0,0,0.8)';
+      })
+      panels[i].addEventListener('mouseout',function(){
+        this.style.backgroundColor = "hsla("+ this.getAttribute("offset") + ", 100%, 50%, 0.9 )";
+      });
+    }
+  }
+  rotate = function(amt){
+    rotateAxis = isHorizontal ? 'rotateY' : 'rotateX';
+    theta += delta * amt;
+    carousel.style.transform = 'translateZ( -'+depth+'px ) '+rotateAxis+'(' + theta + 'deg)';
+  }
+  </script>
+</body>
+</html>
